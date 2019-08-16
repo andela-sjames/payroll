@@ -1,2 +1,2 @@
-# waveapp-payroll
-Wave App Challenge
+# payroll
+Pay me what you owe me ;)
