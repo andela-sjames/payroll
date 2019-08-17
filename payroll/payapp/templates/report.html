@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
+
+<div class="card-panel row">
+    <form method="get" id="fetch_report">
+        <div class="input-field col s6">
+            <select name="report_type" required>
+                <option value="" disabled selected>Select report type</option>
+                <option value="payroll">Fetch Payroll report by id</option>
+                <option value="pay">Fetch Pay report by id</option>
+            </select>
+        </div>
+        <div class="input-field col s2">
+            <input name="report" id="id_inline" type="number" class="validate tooltipped" data-position="top" data-tooltip="Enter report number here">
+        </div>
+        <button class="input-field c-height file-field btn btn-default blue lighten-1 waves-effect waves-light" type="submit">Fetch</button>
+    </form>
+</div>
+
+<div class="divider"></div>
+
+<div class="card-panel" id="pay_card" display>
+    <table id="pay">
+        <caption>Pay Record Report</caption>
+        <thead>
+            <tr>
+                <th>date</th>
+                <th>hours worked</th>
+                <th>employee id</th>
+                <th>job group</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>date</th>
+                <th>hours worked</th>
+                <th>employee id</th>
+                <th>job group</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="card-panel" id="payroll_card">
+    <table id="payroll">
+        <caption>Payroll Record Report</caption>
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Pay Period</th>
+                <th>Amount Paid</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Employee ID</th>
+                <th>Pay Period</th>
+                <th>Amount Paid</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+{% endblock main %}
+

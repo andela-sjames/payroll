@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
+    <div class="card-panel stretch">
+        <form method="post" enctype="multipart/form-data" id="uploadcsv">
+            {% csrf_token %}
+            <div class="row">
+                <div class="file-field input-field col s9">
+                    <div class="btn col blue lighten-1">
+                        <span>Choose a file</span>
+                        <input id="id_csv" name="csv_file" type="file" class="blue lighten-1" required>
+                    </div>
+                    <div class="file-path-wrapper ">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
+                <div class="input-field c-height file-field col s3"><button class="btn btn-large blue lighten-1" type="submit"><i class="material-icons left">cloud</i>Upload</button></div>
+            </div>
+        </form>
+    </div>
+
+    <div class="divider"></div>
+    <br>
+    <div class="card-panel" id="payroll_card">
+        <table id="payroll">
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Pay Period</th>
+                    <th>Amount Paid</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Pay Period</th>
+                    <th>Amount Paid</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+{% endblock main %}
