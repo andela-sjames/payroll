@@ -14,7 +14,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
 
-from payroll.models import Pay, Report, PayRoll
+from payapp.models import Pay, Report, PayRoll
 
 
 # https://github.com/wvchallenges/se-challenge-payroll/blob/master/README.md

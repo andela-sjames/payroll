@@ -5,7 +5,7 @@ volumes:
   postgres_backup: {}
 
 services:
-  db:
+  database:
     restart: always
     image: postgres:10.4
     container_name: payroll_db
@@ -31,7 +31,7 @@ services:
     entrypoint:
       - ./scripts/wait_for_db.sh
     depends_on:
-      - db
+      - database
     environment:
       - POSTGRES_DB=payroll_dev
       - POSTGRESDB_PORT=5432
