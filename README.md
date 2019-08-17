@@ -33,7 +33,7 @@ Username: devadmin
 password: nimda
 ```
 
-You can find this written here `se-challenge-payroll/wavepay/scripts/start_server.sh`
+You can find this written here `payroll/scripts/start_server.sh`
 
 ### RUNNING THE APP
 
