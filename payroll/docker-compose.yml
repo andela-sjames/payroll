@@ -5,15 +5,15 @@ volumes:
   postgres_backup: {}
 
 services:
-  database:
+  db:
     restart: always
     image: postgres:10.4
-    container_name: wavepay_database
+    container_name: payroll_db
     environment:
-      - POSTGRES_DB=wavepay_dev
+      - POSTGRES_DB=payroll_dev
       - POSTGRESDB_PORT=5432
-      - POSTGRES_USER=wavepay_dev
-      - POSTGRES_PASSWORD=wavepay_dev
+      - POSTGRES_USER=payroll_dev
+      - POSTGRES_PASSWORD=payroll_dev
       - POSTGRESDB_HOST=database
     ports:
       - "8092:5432"
@@ -22,7 +22,7 @@ services:
       - postgres_backup:/backups
   web:
     restart: always
-    container_name: wavepay_web
+    container_name: payroll_web
     build: .
     volumes:
       - .:/app
@@ -31,17 +31,17 @@ services:
     entrypoint:
       - ./scripts/wait_for_db.sh
     depends_on:
-      - database
+      - db
     environment:
-      - POSTGRES_DB=wavepay_dev
+      - POSTGRES_DB=payroll_dev
       - POSTGRESDB_PORT=5432
-      - POSTGRES_USER=wavepay_dev
-      - POSTGRES_PASSWORD=wavepay_dev
+      - POSTGRES_USER=payroll_dev
+      - POSTGRES_PASSWORD=payroll_dev
       - POSTGRESDB_HOST=database
       - MEMCACHE_HOST=memcached
   memcached:
     restart: always
-    container_name: wavepay_cache
+    container_name: payroll_cache
     image: memcached:1.5.12
     ports:
       - "11211:11211"
