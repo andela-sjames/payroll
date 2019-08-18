@@ -17,7 +17,6 @@ from django.views.generic import TemplateView, View
 from payapp.models import Pay, Report, PayRoll
 
 
-# https://github.com/wvchallenges/se-challenge-payroll/blob/master/README.md
 class HomeView(TemplateView):
     """Homepage View defined here."""
 
