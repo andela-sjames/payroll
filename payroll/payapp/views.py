@@ -47,7 +47,7 @@ class UploadReportView(View):
         )
         return list(aggregate)
 
-    def two_weeks(self, date):
+    def two_weeks_pay_period(self, date):
         # use 15 days to determine pay period
         # group by first day of the month and last day of the 
         # month
@@ -120,9 +120,18 @@ class UploadReportView(View):
             # use the ids to filter by dates
             for employee_id in employee_ids:
                 # get pay period(s)
-                daily_pay_qs = report.pay.filter(employee_id=employee_id).order_by('date').values_list('date', 'hours', 'job_group')
-                job_group = daily_pay_qs[0][2]
-                grouped_pay = itertools.groupby(daily_pay_qs, self.two_weeks)
+                daily_pay_query_set = report.pay.filter(
+                    employee_id=employee_id
+                ).order_by(
+                    'date'
+                ).values_list(
+                    'date', 'hours', 'job_group'
+                )
+                job_group = daily_pay_query_set[0][2]
+                grouped_pay = itertools.groupby(
+                    daily_pay_query_set, 
+                    self.two_weeks_pay_period
+                )
                 aggregate = self.get_aggregate(grouped_pay, job_group, employee_id)
                 cummulative_payroll = cummulative_payroll + aggregate
 
