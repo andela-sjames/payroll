@@ -15,6 +15,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, View
 
 from payapp.models import Pay, Report, PayRoll
+from payapp.utils import normalize_date
 
 
 class HomeView(TemplateView):
@@ -159,20 +160,10 @@ class UploadReportView(View):
 class GetPayRollByReportIdView(View):
     """View defined to get payroll report by ID."""
 
-    def normalize_date(self, date):
-        d, m, y = date.day, date.month, date.year
-        date_format = f"{d}/{m}/{y}"
-        if d is 1:
-            end_date = f" - 15/{m}/{y}"
-            return date_format + end_date
-        else:
-            start_date = f"16/{m}/{y} - "
-            return start_date + date_format
-
-    def normalize_qs(self, qs):
+    def normalize_payroll(self, qs):
         for obj in qs:
             date = obj['pay_period']
-            period = self.normalize_date(date)
+            period = self.normalize_date(date, "payroll")
             obj['pay_period'] = period
             obj['amount'] = f"${obj['amount']}"
         return qs
@@ -196,7 +187,7 @@ class GetPayRollByReportIdView(View):
                 })
 
             queryset = report.payroll.values('employee_id', 'pay_period', 'amount')
-            queryset = self.normalize_qs(queryset)
+            queryset = self.normalize_payroll(queryset)
             serialized_q = json.dumps(list(queryset), cls=DjangoJSONEncoder)
 
         cache.set(cache_key, serialized_q)
@@ -212,14 +203,10 @@ class GetPayRollByReportIdView(View):
 class GetReportByIdView(View):
     """View defined to get pay report by id."""
 
-    def normalize_date(self, date):
-        d, m, y = date.day, date.month, date.year
-        return f"{d}/{m}/{y}"
-
-    def normalize_qs(self, qs):
+    def normalize_report(self, qs):
         for obj in qs:
             date = obj['date']
-            date = self.normalize_date(date)
+            date = self.normalize_date(date, "report")
             obj['date'] = date
         return qs
 
@@ -242,7 +229,7 @@ class GetReportByIdView(View):
                 })
 
             queryset = report.pay.values('date', 'hours', 'employee_id', 'job_group')
-            queryset = self.normalize_qs(queryset)
+            queryset = self.normalize_report(queryset)
             serialized_q = json.dumps(list(queryset), cls=DjangoJSONEncoder)
 
         cache.set(cache_key, serialized_q)
