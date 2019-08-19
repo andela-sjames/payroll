@@ -163,7 +163,7 @@ class GetPayRollByReportIdView(View):
     def normalize_payroll(self, qs):
         for obj in qs:
             date = obj['pay_period']
-            period = self.normalize_date(date, "payroll")
+            period = normalize_date(date, "payroll")
             obj['pay_period'] = period
             obj['amount'] = f"${obj['amount']}"
         return qs
@@ -206,7 +206,7 @@ class GetReportByIdView(View):
     def normalize_report(self, qs):
         for obj in qs:
             date = obj['date']
-            date = self.normalize_date(date, "report")
+            date = normalize_date(date, "report")
             obj['date'] = date
         return qs
 
