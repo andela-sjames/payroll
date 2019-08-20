@@ -79,8 +79,8 @@ class UploadReportView(View):
         csv_upload = request.FILES['csv_file']
         if not csv_upload.name.endswith('.csv'):
             return JsonResponse({
-                "status": "failure",
                 "msg": "file should be CSV",
+                "status": "failure",
             })
 
         data_set = csv_upload.read().decode('UTF-8')
@@ -182,8 +182,8 @@ class GetPayRollByReportIdView(View):
                 report = Report.objects.get(report_id=report_id)
             except Report.DoesNotExist:
                 return JsonResponse({
-                    "status": "failure", 
                     "msg": f"No Payroll report with id {report_id}",
+                    "status": "failure", 
                 })
 
             queryset = report.payroll.values('employee_id', 'pay_period', 'amount')
@@ -194,8 +194,8 @@ class GetPayRollByReportIdView(View):
 
         # return payroll at this point.
         return JsonResponse({
-            "status": "success", 
             "msg": "payroll loading",
+            "status": "success", 
             "data": serialized_q
         })
 
@@ -225,8 +225,8 @@ class GetReportByIdView(View):
                 report = Report.objects.get(report_id=report_id)
             except Report.DoesNotExist:
                 return JsonResponse({
-                    "status": "failure", 
                     "msg": f"No Pay report with id {report_id}",
+                    "status": "failure", 
                 })
 
             queryset = report.pay.values('date', 'hours', 'employee_id', 'job_group')
@@ -237,7 +237,7 @@ class GetReportByIdView(View):
 
         # return result at this point.
         return JsonResponse({
-            "status": "success", 
             "msg": "report loading",
+            "status": "success", 
             "data": serialized_q
         })
