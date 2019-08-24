@@ -1,7 +1,4 @@
-import datetime
 import json
-
-from datetime import date, timedelta
 
 from django.core.cache import cache
 from django.core.serializers.json import DjangoJSONEncoder
@@ -121,6 +118,7 @@ class GetPayRollByReportIdView(View):
             serialized_q = json.dumps(list(queryset), cls=DjangoJSONEncoder)
 
         cache.set(cache_key, serialized_q)
+        # cache.clear()
 
         # return payroll at this point.
         return JsonResponse({
@@ -164,6 +162,7 @@ class GetReportByIdView(View):
             serialized_q = json.dumps(list(queryset), cls=DjangoJSONEncoder)
 
         cache.set(cache_key, serialized_q)
+        # cache.clear()
 
         # return result at this point.
         return JsonResponse({

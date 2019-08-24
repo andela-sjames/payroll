@@ -3,7 +3,6 @@ import io
 import itertools
 import calendar
 
-
 from payapp.models import Report
 
 
