@@ -15,7 +15,7 @@ def get_or_create_report(report_id):
         return report, True
 
 
-def normalize_date(self, date, view):
+def normalize_date(date, view):
 
     if view == "payroll":
         d, m, y = date.day, date.month, date.year
