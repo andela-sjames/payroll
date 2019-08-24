@@ -61,7 +61,7 @@ class UploadReportView(View):
 
             payroll = generate_payroll(report)
 
-            # populate the DB here. 
+            # populate the DB here with payroll details. 
             for data in payroll:
                 PayRoll.objects.create(
                     employee_id = data[0],
