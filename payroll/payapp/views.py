@@ -1,7 +1,5 @@
 import calendar
-import csv
 import datetime
-import io
 import itertools
 import json
 
@@ -15,7 +13,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, View
 
 from payapp.models import Pay, Report, PayRoll
-from payapp.utils import normalize_date
+from payapp.utils import normalize_date, process_input
 
 
 class HomeView(TemplateView):
@@ -65,38 +63,16 @@ class UploadReportView(View):
         date_format = f"{y}-{m}-{d}"
         return date_format
 
-    def get_or_create_report(self, report_id):
-        try:
-            return Report.objects.get(report_id=report_id), False
-        except Report.DoesNotExist:
-            report = Report(
-                report_id = report_id
-            )
-            report.save()
-            return report, True
-
     def post(self, request):
-        csv_upload = request.FILES['csv_file']
-        if not csv_upload.name.endswith('.csv'):
+        csv_data = request.FILES['csv_file']
+        if not csv_data.name.endswith('.csv'):
             return JsonResponse({
                 "msg": "file should be CSV",
                 "status": "failure",
             })
 
-        data_set = csv_upload.read().decode('UTF-8')
-        io_string = io.StringIO(data_set)
-
-        # Skip header, we do not need it, b/cos it's guaranteed. 
-        next(io_string)
-        data = []
-        # move on to the actual data
-        for row in csv.reader(io_string, delimiter=",", quotechar="|"):
-            # get the last row to know report_id
-            columns = [row[0], row[1], row[2], row[3]]
-            data.append(columns)
-
-        last_row = data.pop()
-        report, status = self.get_or_create_report(int(last_row[1]))
+        data, report_status = process_input(csv_data)
+        report, status = report_status
         if status:
             # proceed to create the pay model instances
             # this can be abstracted into a background process or

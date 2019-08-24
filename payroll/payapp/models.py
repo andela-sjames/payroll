@@ -13,7 +13,7 @@ class Report(models.Model):
     report_id = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.report_id
+        return f"Report ID: {self.report_id}"
 
 
 class Pay(models.Model):
@@ -26,7 +26,7 @@ class Pay(models.Model):
     report = models.ForeignKey(Report, null=True, blank=True, on_delete=models.CASCADE, related_name="pay")
 
     def __str__(self):
-        return self.employee_id
+        return f"Pay with employee ID: {self.employee_id}"
 
 
 class PayRoll(models.Model):
@@ -38,4 +38,4 @@ class PayRoll(models.Model):
     report = models.ForeignKey(Report, null=True, blank=True, on_delete=models.CASCADE, related_name="payroll")
 
     def __str__(self):
-        return self.employee_id
+        return f"PayRoll with employee ID: {self.employee_id}"
