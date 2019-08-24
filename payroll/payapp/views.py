@@ -49,8 +49,6 @@ class UploadReportView(View):
         report, status = report_status
         if status:
             # proceed to create the pay model instances
-            # this can be abstracted into a background process or
-            # it's own service for scaling.
             for row in data:
                 date_format = self.format_time_string(row[0])
                 Pay.objects.create(
@@ -118,7 +116,6 @@ class GetPayRollByReportIdView(View):
             serialized_q = json.dumps(list(queryset), cls=DjangoJSONEncoder)
 
         cache.set(cache_key, serialized_q)
-        # cache.clear()
 
         # return payroll at this point.
         return JsonResponse({
@@ -162,7 +159,6 @@ class GetReportByIdView(View):
             serialized_q = json.dumps(list(queryset), cls=DjangoJSONEncoder)
 
         cache.set(cache_key, serialized_q)
-        # cache.clear()
 
         # return result at this point.
         return JsonResponse({

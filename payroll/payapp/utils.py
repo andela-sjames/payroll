@@ -100,5 +100,5 @@ def generate_payroll(report):
         )
         aggregate = get_aggregate(grouped_pay, job_group, employee_id)
         cummulative_payroll = cummulative_payroll + aggregate
-    
+ 
     return cummulative_payroll
