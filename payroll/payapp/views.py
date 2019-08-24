@@ -138,7 +138,7 @@ class GetReportByIdView(View):
     def get(self, request, *args, **kwargs):
 
         # cache is set to cache for 1 hour
-        # from the seetings file.
+        # from the settings file.
         cache_key = request.build_absolute_uri().split("?")[0]
         serialized_q = cache.get(cache_key)
 
