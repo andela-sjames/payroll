@@ -31,7 +31,7 @@ class ReportView(TemplateView):
 
 class UploadReportView(View):
     """View defined to handle reports uploads and generating payrolls/"""
-    
+
     def format_time_string(self, date_string):
         d, m, y = list(map(int, date_string.split("/")))
         date_format = f"{y}-{m}-{d}"
@@ -52,32 +52,32 @@ class UploadReportView(View):
             for row in data:
                 date_format = self.format_time_string(row[0])
                 Pay.objects.create(
-                    date = date_format,
-                    hours = float(row[1]),
-                    employee_id = int(row[2]),
-                    job_group = row[3],
-                    report = report
+                    date=date_format,
+                    hours=float(row[1]),
+                    employee_id=int(row[2]),
+                    job_group=row[3],
+                    report=report
                 )
 
             payroll = generate_payroll(report)
 
-            # populate the DB here with payroll details. 
+            # populate the DB here with payroll details.
             for data in payroll:
                 PayRoll.objects.create(
-                    employee_id = data[0],
-                    pay_period = data[1],
-                    amount = data[2],
-                    report = report
+                    employee_id=data[0],
+                    pay_period=data[1],
+                    amount=data[2],
+                    report=report
                 )
 
             return JsonResponse({
                     "msg": "Report successfully created",
-                    "status": "success", 
+                    "status": "success",
                     "report_id": report.report_id
                 })
         else:
             return JsonResponse({
-                "msg": f"Report {report.report_id} already exists", 
+                "msg": f"Report {report.report_id} already exists",
                 "status": "failure"
             })
 
@@ -92,7 +92,7 @@ class GetPayRollByReportIdView(View):
             obj['pay_period'] = period
             obj['amount'] = f"${obj['amount']}"
         return qs
-    
+
     def get(self, request, *args, **kwargs):
 
         # cache this view for 1 hour
@@ -108,10 +108,12 @@ class GetPayRollByReportIdView(View):
             except Report.DoesNotExist:
                 return JsonResponse({
                     "msg": f"No Payroll report with id {report_id}",
-                    "status": "failure", 
+                    "status": "failure",
                 })
 
-            queryset = report.payroll.values('employee_id', 'pay_period', 'amount')
+            queryset = report.payroll.values(
+                'employee_id', 'pay_period', 'amount'
+            )
             queryset = self.normalize_payroll(queryset)
             serialized_q = json.dumps(list(queryset), cls=DjangoJSONEncoder)
 
@@ -120,7 +122,7 @@ class GetPayRollByReportIdView(View):
         # return payroll at this point.
         return JsonResponse({
             "msg": "payroll loading",
-            "status": "success", 
+            "status": "success",
             "data": serialized_q
         })
 
@@ -143,7 +145,7 @@ class GetReportByIdView(View):
         serialized_q = cache.get(cache_key)
 
         if not serialized_q:
-    
+
             # query the DB for the report by id
             report_id = self.kwargs.get('report_id')
             try:
@@ -151,10 +153,12 @@ class GetReportByIdView(View):
             except Report.DoesNotExist:
                 return JsonResponse({
                     "msg": f"No Pay report with id {report_id}",
-                    "status": "failure", 
+                    "status": "failure",
                 })
 
-            queryset = report.pay.values('date', 'hours', 'employee_id', 'job_group')
+            queryset = report.pay.values(
+                'date', 'hours', 'employee_id', 'job_group'
+            )
             queryset = self.normalize_report(queryset)
             serialized_q = json.dumps(list(queryset), cls=DjangoJSONEncoder)
 
@@ -163,6 +167,6 @@ class GetReportByIdView(View):
         # return result at this point.
         return JsonResponse({
             "msg": "report loading",
-            "status": "success", 
+            "status": "success",
             "data": serialized_q
         })
