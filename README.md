@@ -20,13 +20,13 @@ Run the command `docker-compose up` from the **root directory** i.e. where you h
 
 The application consists of three(3) major services: Web, Database and Memcached. These services are coupled together using the `docker-compose.yml` file at the root of the application.
 
-The Project specification follows the exact requirements given below with some extras:
+The Project specifications:
 
 - User can fetch a `Pay` report (the Uploaded report) by id or a `Payroll` report (the Generated report) by id when you are on the `/pay/report/` route. This page is **scrollable** as this page can hold these reports when fetched.
 - User can download reports generated or uploaded as `CSV, EXCEL AND PDF`
 - User can `Copy` the generated reports to Clipboard and can `Print` the generated report too.
-- As per the requirements, generated `payroll` results and uploaded `pay` reports are saved to the database. However,`memcached` was introduced to save the database from making multiple queries whenever a report is repeatedly called. This takes care of the overhead of repeated queries to the database.
-- Django comes with an `Admin` dashboard by default, so I took advantage of that to create an admin user for convinience. To view the admin dashboard after starting up the application, navigate to the `/admin` route and login using the details below
+- Generated `payroll` results and uploaded `pay` reports are saved to the database. `Memcached` was introduced to save the database from making multiple queries whenever a report is repeatedly called. This takes care of the overhead of repeated queries to the database.
+- Django comes with an `Admin` dashboard by default, to view the admin dashboard after starting up the application, navigate to the `/admin` route and login using the details below
 
 ```text
 Username: devadmin
