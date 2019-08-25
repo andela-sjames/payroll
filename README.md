@@ -40,3 +40,5 @@ You can find this written here `payroll/scripts/start_server.sh`
 Once you have the application running locally using `docker-compose up` from the **root directory** navigate to the homepage `localhost:8000` or `0.0.0.0:8000` to take the app for a spin. `:)`
 
 The app has an extra navigation link at the top right called `Report`, this will take you to the report page where you can fetch report(s) by id.
+
+![Report_by_id_view](report_by_id.png)
